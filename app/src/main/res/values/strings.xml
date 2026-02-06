@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Dataset Generator</string>
+    <string name="start_recording">Start Recording</string>
+    <string name="permit_camera">Camera permission is required to record video.</string>
+    <string name="permit_storage">Storage permission is required to save data.</string>
+    <string name="recording_hint">Start Left -> Move Front -> Right -> Move Back</string>
+    <string name="approve_recording">Approve &amp; Save</string>
+    <string name="retake_recording">Retake</string>
+    <string name="enter_object_name">Enter Object Name</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="uploading">Uploading...</string>
+    <string name="upload_complete">Upload Complete!</string>
+    <string name="default_web_client_id">GOOGLE_CLIENT_ID_PLACEHOLDER</string>
+</resources>

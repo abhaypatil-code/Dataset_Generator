@@ -1,13 +1,13 @@
 # Google Drive API Setup Guide
 
-This guide walks you through setting up Google Cloud credentials for the Cattle Data Collection app.
+This guide walks you through setting up Google Cloud credentials for the Dataset Generator app.
 
 ## Step 1: Create a Google Cloud Project
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Click the project dropdown at the top
 3. Click **New Project**
-4. Enter project name: `Cattle Data Collector`
+4. Enter project name: `Dataset Generator`
 5. Click **Create**
 
 ## Step 2: Enable Google Drive API
@@ -22,7 +22,7 @@ This guide walks you through setting up Google Cloud credentials for the Cattle 
 2. Select **External** user type (or Internal if using Google Workspace)
 3. Click **Create**
 4. Fill in the required fields:
-   - **App name**: Cattle Data Collector
+   - **App name**: Dataset Generator
    - **User support email**: Your email
    - **Developer contact information**: Your email
 5. Click **Save and Continue**
@@ -44,8 +44,8 @@ This guide walks you through setting up Google Cloud credentials for the Cattle 
    > If you are taken to a "Credential Type" wizard asking "What data will you be accessing?", select **User data**. This is because the app accesses the *user's* personal Google Drive.
 3. Select **Android** as application type
 4. Enter:
-   - **Name**: Cattle Data Android
-   - **Package name**: `com.example.cattledata`
+   - **Name**: Dataset Generator Android
+   - **Package name**: `com.example.datasetgenerator`
    - **SHA-1 certificate fingerprint**: See below
 5. Click **Create**
 
@@ -66,7 +66,7 @@ Copy the SHA1 value and paste it in the Cloud Console.
 
 1. Click **Create Credentials** → **OAuth client ID**
 2. Select **Web application** as application type
-3. Enter **Name**: Cattle Data Web Client
+3. Enter **Name**: Dataset Generator Web Client
 4. Leave redirect URIs empty for now
 5. Click **Create**
 6. **Copy the Client ID** - you'll need this for the app
@@ -93,7 +93,7 @@ For testing with limited users, you can skip this step.
 
 ### "Sign in failed" error
 - Verify SHA-1 fingerprint matches your debug/release key
-- Check package name matches exactly: `com.example.cattledata`
+- Check package name matches exactly: `com.example.datasetgenerator`
 - Ensure you're using the Web Client ID, not the Android Client ID
 
 ### "Access denied" error

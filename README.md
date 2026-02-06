@@ -1,13 +1,13 @@
-# Cattle Data Collection App
+# Video Dataset Collection App
 
-An Android application for collecting high-quality labeled cattle video and image data for training CNN models for cattle breed identification.
+An Android application for collecting high-quality labeled video and image data for training computer vision models (e.g., CNNs) for object identification or classification.
 
 ## Features
 
-- **Guided Video Recording** - Visual prompts guide users through the optimal capture sequence (Left → Front → Right → Back)
-- **Automatic Frame Extraction** - Videos are automatically converted to labeled image sequences using FFmpeg
+- **Guided Video Recording** - Visual prompts guide users through the optimal capture sequence (e.g., Left → Front → Right)
+- **Automatic Frame Extraction** - Videos are automatically converted to labeled image sequences using Android's MediaMetadataRetriever
 - **Google Drive Upload** - Extracted frames are uploaded to the user's Google Drive for easy access
-- **Metadata Generation** - JSON metadata files accompany each recording with breed, timestamp, resolution, and frame count
+- **Metadata Generation** - JSON metadata files accompany each recording with label, timestamp, resolution, and frame count
 - **Offline Support** - Recordings are queued and uploaded when network is available
 - **Field-Friendly UI** - Large buttons and clear instructions designed for non-technical users
 
@@ -38,7 +38,7 @@ See [GOOGLE_DRIVE_SETUP.md](GOOGLE_DRIVE_SETUP.md) for detailed instructions.
 3. Configure OAuth consent screen
 4. Create OAuth 2.0 credentials (Android app)
 5. Get your Web Client ID
-6. Update `HomeScreen.kt` with your Web Client ID:
+6. Update the configuration (e.g., `HomeScreen.kt`) with your Web Client ID:
    ```kotlin
    .requestIdToken("YOUR_WEB_CLIENT_ID") // Replace this
    ```
@@ -56,15 +56,11 @@ See [GOOGLE_DRIVE_SETUP.md](GOOGLE_DRIVE_SETUP.md) for detailed instructions.
 
 1. **Launch the app** and grant camera/audio permissions
 2. **Sign in to Google Drive** (optional but recommended)
-3. Tap **START RECORDING**
-4. Follow the on-screen prompts:
-   - Start at the cattle's LEFT side
-   - Move smoothly to FRONT
-   - Continue to RIGHT side
-   - End at BACK side view
+3. **Tap START RECORDING**
+4. **Follow the on-screen prompts** to capture the object from all angles
 5. **Review** the recording and tap APPROVE or RETAKE
-6. **Enter the breed name** (e.g., "Gir", "Sahiwal", "Holstein")
-7. Frames are extracted and uploaded automatically
+6. **Enter the object name** (e.g., "Chair", "Monitor", "ID_123")
+7. **Frames are extracted and uploaded automatically**
 
 ## Output Data Structure
 
@@ -73,12 +69,12 @@ Uploads to the shared data collection folder.
 
 ```
 [Shared Folder]/
-├── Gir_1706986200000/
+├── Object_Name_1706986200000/
 │   ├── frame_0001.jpg
 │   ├── frame_0002.jpg
 │   ├── ...
 │   └── metadata.json
-├── Sahiwal_1706986500000/
+├── Another_Object_1706986500000/
 │   └── ...
 ```
 
@@ -86,7 +82,7 @@ Uploads to the shared data collection folder.
 
 ```json
 {
-  "breed": "Gir",
+  "object_name": "Chair", 
   "timestamp": 1706986200000,
   "frame_count": 25,
   "video_resolution": "1080p",
@@ -95,9 +91,10 @@ Uploads to the shared data collection folder.
   "video_duration_ms": 25000,
   "extraction_fps": 1,
   "capture_date": "2024-02-03T22:30:00.000+0530",
-  "folder_name": "Gir_1706986200000"
+  "folder_name": "Chair_1706986200000"
 }
 ```
+*(Note: "object_name" field maps to the entered object name)*
 
 ## Configuration
 
@@ -114,7 +111,7 @@ Default frame extraction rate is **1 FPS**. To change:
 The app records in HD (1280x720) by default. To change:
 
 1. Open `RecordingScreen.kt`
-2. Modify `QualitySelector.from(Quality.HD)` to:
+2. Modify `QualitySelector` to:
    - `Quality.SD` - Lower quality, smaller files
    - `Quality.FHD` - Full HD (1080p)
    - `Quality.UHD` - 4K (if supported by device)
@@ -122,28 +119,27 @@ The app records in HD (1280x720) by default. To change:
 ## Dataset Scalability Considerations
 
 - **Storage**: Each 20-second recording produces ~20 frames at 1 FPS (~2-4 MB total)
-- **Throughput**: A single user can record ~100+ cattle per day
+- **Throughput**: Scalable for high-volume data collection
 - **Labeling**: Folder names serve as labels for ML training
 - **Consistency**: All frames have consistent aspect ratio and resolution
 
 ## Architecture
 
 ```
-com.example.cattledata/
+com.example.datasetgenerator/
 ├── data/
 │   ├── AppSettings.kt       # SharedPreferences wrapper
 │   ├── GoogleDriveHelper.kt # Drive API operations
 │   └── UploadWorker.kt      # Background upload worker
 ├── domain/
-│   ├── FrameExtractor.kt    # FFmpeg-based extraction
+│   ├── FrameExtractor.kt    # Android Native extraction
 │   └── MetadataGenerator.kt # JSON metadata creation
 └── ui/
-    ├── CattleDataAppNavHost.kt # Navigation
-    └── screens/
-        ├── HomeScreen.kt     # Entry + sign-in
-        ├── RecordingScreen.kt # Camera capture
-        ├── PreviewScreen.kt   # Video review
-        └── UploadScreen.kt    # Processing + upload
+    ├── screens/
+    │   ├── HomeScreen.kt    # Entry + sign-in
+    │   ├── RecordingScreen.kt # Camera capture
+    │   ├── PreviewScreen.kt   # Video review
+    │   └── UploadScreen.kt    # Processing + upload
 ```
 
 ## Tech Stack
@@ -151,7 +147,7 @@ com.example.cattledata/
 - **Kotlin** - Primary language
 - **Jetpack Compose** - UI framework
 - **CameraX** - Video recording
-- **FFmpegKit** - Frame extraction
+- **MediaMetadataRetriever** - Frame extraction
 - **WorkManager** - Background uploads
 - **Google Drive API v3** - Cloud storage
 
